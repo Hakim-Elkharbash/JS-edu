@@ -82,9 +82,9 @@ $(document).ready(function(){
     }
 
 
-    AllLectures.push(new Lectures("c101","التربية الإسلامية","مقدمة","https://www.youtube.com/embed/UAG_FBZJVJ8","123.pdf").getLectures())
+    AllLectures.push(new Lectures("c101","التربية الإسلامية","مقدمة","https://www.youtube.com/embed/UAG_FBZJVJ8","").getLectures())
     AllLectures.push(new Lectures("c101","التربية الإسلامية","1 مقدمة","https://www.youtube.com/embed/UAG_FBZJVJ8","223.pdf").getLectures())
-    AllLectures.push(new Lectures("c101","التربية الإسلامية","2 مقدمة","https://www.youtube.com/embed/UAG_FBZJVJ8","323.pdf").getLectures())
+    AllLectures.push(new Lectures("c101","التربية الإسلامية","2 مقدمة","https://www.youtube.com/embed/UAG_FBZJVJ8","").getLectures())
     AllLectures.push(new Lectures("c101","التربية الإسلامية","3 مقدمة","https://www.youtube.com/embed/UAG_FBZJVJ8","423.pdf").getLectures())
     AllLectures.push(new Lectures("c105","التربية الإسلامية","4 مقدمة","https://www.youtube.com/embed/UAG_FBZJVJ8","523.pdf").getLectures())
     AllLectures.push(new Lectures("c105","التربية الإسلامية","5 مقدمة","https://www.youtube.com/embed/UAG_FBZJVJ8","623.pdf").getLectures())
@@ -223,18 +223,40 @@ $(document).ready(function(){
         let courseLectures = AllLectures.filter(function(element){
             return element[0] == courseCode
         });
-
+        
         if (courseLectures.length > 0){
-
             courseLectures.forEach(function(course){
-                $(courseName).text(course[1])     
-                $("#allLectures").append(
-                    '<article class="course"> <div> <iframe width="450" height="315" src="'+
-                     course[3] +
-                     '" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div> <div class="course_info"><h3>' 
-                    + course[2] + 
-                    '</h3><br></div></article>'
-                );
+                $(courseName).text(course[1]) 
+                console.log(course[3]) 
+                if (course[3] != "" && course[4] == ""){
+                    $("#allLectures").append(
+                        '<article class="course"> <div> <iframe width=100% height="315" src="'+
+                        course[3] +
+                        '" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div> <div class="course_info"><h3>' 
+                        + course[2] + 
+                        '</h3><br></div></article>'
+                    );
+                }else if (course[3] == "" && course[4] != ""){
+                    $("#allLectures").append(
+                        '<article class="course"> <div><img src="./images/pdf.jpg" alt=""></div> <div class="course_info"><h3>' 
+                        + course[2] + 
+                        '</h3><br><a href="./pdf/'+ course[4] + '" class="btn btn-primary"> تحميل المحاضرة PDF </a></div></article>'
+                    );
+                }else if (course[3] != "" && course[4] != ""){
+                    $("#allLectures").append(
+                        '<article class="course"> <div> <iframe width=100% height="315" src="'+
+                        course[3] +
+                        '" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div> <div class="course_info"><h3>' 
+                        + course[2] + 
+                        '</h3><br><a href="./pdf/'+ course[4] + '" class="btn btn-primary"> تحميل المحاضرة PDF </a></div></article>'
+                    );
+                }else{
+                    $("#allLectures").append(
+                        '<article class="course"> <div> لا يوجد محتوى للمحاضرة </div> <div class="course_info"><h3>' 
+                        + course[2] + 
+                        '</h3><br></div></article>'
+                    );
+                }     
             })
         }else{
             $(courseName).text("لا توجد محاضرات"); 
