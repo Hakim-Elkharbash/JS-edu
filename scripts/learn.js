@@ -1,5 +1,6 @@
 $(document).ready(function(){
     const AllLevels = []
+    const AllLectures = []
 
     //---- Accunts class, only have one Admin account
     class Accounts{
@@ -66,30 +67,29 @@ $(document).ready(function(){
 
     class Lectures {
         lectureDetails = []
-        constructor(courseLink, lectureName, lectureYoutubeLink) {
+        constructor(courseLink, courseName, lectureName, lectureYoutubeLink, lecturePDF) {
             this.courseLink = courseLink
+            this.courseName = courseName
             this.lectureName = lectureName 
             this.lectureYoutubeLink = lectureYoutubeLink
+            this.lecturePDF = lecturePDF
+            this.Lectures = []
         }
 
-        getCourseName = function(){
-            AllLevels.forEach(function(element) {
-                console.log(element);
-            });
-            
-            
-            //lectureDetails.push("test")
-            //return this.Courses.push(courseDetails);
-        }   
-        
         getLectures = function(){
-            //return this.Courses.push(courseDetails);
+           return [this.courseLink, this.courseName,  this.lectureName, this.lectureYoutubeLink, this.lecturePDF];
         }
     }
 
 
-    const xx = new Lectures("1","2","3")
-    console.log(xx)
+    AllLectures.push(new Lectures("c101","التربية الإسلامية","مقدمة","https://www.youtube.com/embed/UAG_FBZJVJ8","123.pdf").getLectures())
+    AllLectures.push(new Lectures("c101","التربية الإسلامية","1 مقدمة","https://www.youtube.com/embed/UAG_FBZJVJ8","223.pdf").getLectures())
+    AllLectures.push(new Lectures("c101","التربية الإسلامية","2 مقدمة","https://www.youtube.com/embed/UAG_FBZJVJ8","323.pdf").getLectures())
+    AllLectures.push(new Lectures("c101","التربية الإسلامية","3 مقدمة","https://www.youtube.com/embed/UAG_FBZJVJ8","423.pdf").getLectures())
+    AllLectures.push(new Lectures("c105","التربية الإسلامية","4 مقدمة","https://www.youtube.com/embed/UAG_FBZJVJ8","523.pdf").getLectures())
+    AllLectures.push(new Lectures("c105","التربية الإسلامية","5 مقدمة","https://www.youtube.com/embed/UAG_FBZJVJ8","623.pdf").getLectures())
+    AllLectures.push(new Lectures("c105","التربية الإسلامية","6 مقدمة","https://www.youtube.com/embed/UAG_FBZJVJ8","723.pdf").getLectures())
+    console.log(AllLectures)
 
     //----- Create objects for levels and cusrces
     c1 = new Levels("مقررات السنة الاولى","course1.jpg","c1");
@@ -190,7 +190,7 @@ $(document).ready(function(){
                     '<article class="course"><div class="course_info"><h3>'+
                     getCourseDetails(1)[i][0]
                     +'</h3>'+
-                    '<div>اسم الاستاذ: ' + getCourseDetails(0)[i][1] + '</div>'
+                    '<div>اسم الاستاذ: ' + getCourseDetails(1)[i][1] + '</div>'
                     +'<br><a href="lectures.html?course='+ getCourseDetails(1)[i][2] +'" class="btn btn-primary">المحاضرات المتوفرة</a></div></article>'
 
                 ); 
@@ -202,7 +202,7 @@ $(document).ready(function(){
                     '<article class="course"><div class="course_info"><h3>'+
                     getCourseDetails(2)[i][0]
                     +'</h3>'+
-                    '<div>اسم الاستاذ: ' + getCourseDetails(0)[i][1] + '</div>'
+                    '<div>اسم الاستاذ: ' + getCourseDetails(2)[i][1] + '</div>'
                     +
                     '<br><a href="lectures.html?course='+ getCourseDetails(2)[i][2] +'" class="btn btn-primary">المحاضرات المتوفرة</a></div></article>'
 
@@ -210,6 +210,34 @@ $(document).ready(function(){
             }
         }else{
             $(levelName).text("بيانات غير صحيحة");
+        }
+    }
+
+
+
+
+
+
+    if (document.location.pathname.match(/[^\/]+$/)[0] == "lectures.html"){
+        courseCode = new URL(window.location.href).searchParams.get("course")
+        let courseLectures = AllLectures.filter(function(element){
+            return element[0] == courseCode
+        });
+
+        if (courseLectures.length > 0){
+
+            courseLectures.forEach(function(course){
+                $(courseName).text(course[1])     
+                $("#allLectures").append(
+                    '<article class="course"> <div> <iframe width="450" height="315" src="'+
+                     course[3] +
+                     '" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div> <div class="course_info"><h3>' 
+                    + course[2] + 
+                    '</h3><br></div></article>'
+                );
+            })
+        }else{
+            $(courseName).text("لا توجد محاضرات"); 
         }
     }
 });
