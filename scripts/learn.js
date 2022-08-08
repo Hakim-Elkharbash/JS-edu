@@ -1,7 +1,7 @@
 $(document).ready(function(){
     const AllLevels = []
-    const AllLectures = []
-
+    var AllLectures = []
+        
     //---- Accunts class, only have one Admin account
     class Accounts{
         constructor() {
@@ -16,10 +16,11 @@ $(document).ready(function(){
             }
         }
     }
+
     //---- Check admin login passcode
     $( "#loginAdmin" ).click(function() {
         const admin = new Accounts();
-        (admin.loginCheck(prompt('Enter Passcode'))) ? window.location.href = 'add.html' : alert("Wrong Passcode");
+        (admin.loginCheck(prompt('Enter Passcode'))) ? window.location.href = 'addLecture.html' : alert("Wrong Passcode");
     });
 
 
@@ -81,14 +82,16 @@ $(document).ready(function(){
         }
     }
 
-
-    AllLectures.push(new Lectures("c101","التربية الإسلامية","مقدمة","https://www.youtube.com/embed/UAG_FBZJVJ8","").getLectures())
-    AllLectures.push(new Lectures("c101","التربية الإسلامية","1 مقدمة","https://www.youtube.com/embed/UAG_FBZJVJ8","223.pdf").getLectures())
-    AllLectures.push(new Lectures("c101","التربية الإسلامية","2 مقدمة","https://www.youtube.com/embed/UAG_FBZJVJ8","").getLectures())
-    AllLectures.push(new Lectures("c101","التربية الإسلامية","3 مقدمة","https://www.youtube.com/embed/UAG_FBZJVJ8","423.pdf").getLectures())
-    AllLectures.push(new Lectures("c105","التربية الإسلامية","4 مقدمة","https://www.youtube.com/embed/UAG_FBZJVJ8","523.pdf").getLectures())
-    AllLectures.push(new Lectures("c105","التربية الإسلامية","5 مقدمة","https://www.youtube.com/embed/UAG_FBZJVJ8","623.pdf").getLectures())
-    AllLectures.push(new Lectures("c105","التربية الإسلامية","6 مقدمة","https://www.youtube.com/embed/UAG_FBZJVJ8","723.pdf").getLectures())
+   
+    //if (document.location.pathname.match(/[^\/]+$/)[0] == "index.html"){
+        AllLectures.push(new Lectures("c101","التربية الإسلامية","مقدمة","https://www.youtube.com/embed/UAG_FBZJVJ8","").getLectures())
+        AllLectures.push(new Lectures("c101","التربية الإسلامية","1 مقدمة","https://www.youtube.com/embed/UAG_FBZJVJ8","223.pdf").getLectures())
+        AllLectures.push(new Lectures("c101","التربية الإسلامية","2 مقدمة","https://www.youtube.com/embed/UAG_FBZJVJ8","").getLectures())
+        AllLectures.push(new Lectures("c101","التربية الإسلامية","3 مقدمة","https://www.youtube.com/embed/UAG_FBZJVJ8","423.pdf").getLectures())
+        AllLectures.push(new Lectures("c105","التربية الإسلامية","4 مقدمة","https://www.youtube.com/embed/UAG_FBZJVJ8","523.pdf").getLectures())
+        AllLectures.push(new Lectures("c105","التربية الإسلامية","5 مقدمة","https://www.youtube.com/embed/UAG_FBZJVJ8","623.pdf").getLectures())
+        AllLectures.push(new Lectures("c105","التربية الإسلامية","6 مقدمة","https://www.youtube.com/embed/UAG_FBZJVJ8","723.pdf").getLectures())
+    //}
     console.log(AllLectures)
 
     //----- Create objects for levels and cusrces
@@ -223,11 +226,11 @@ $(document).ready(function(){
         let courseLectures = AllLectures.filter(function(element){
             return element[0] == courseCode
         });
-        
+
         if (courseLectures.length > 0){
             courseLectures.forEach(function(course){
                 $(courseName).text(course[1]) 
-                console.log(course[3]) 
+                //console.log(course[3]) 
                 if (course[3] != "" && course[4] == ""){
                     $("#allLectures").append(
                         '<article class="course"> <div> <iframe width=100% height="315" src="'+
@@ -262,4 +265,23 @@ $(document).ready(function(){
             $(courseName).text("لا توجد محاضرات"); 
         }
     }
+
+
+
+    $("#addLectures").submit(function(data){
+        data.preventDefault();
+        courseLink = $("#addLectures").serializeArray()[0].value
+        courseName = $("#addLectures").serializeArray()[0].value
+        lectureName = $("#addLectures").serializeArray()[1].value
+        lectureYoutubeLink = $("#addLectures").serializeArray()[2].value
+        lecturePDF = $("#addLectures").serializeArray()[3].value
+        
+        //console.log(AllLectures)
+        AllLectures.push(new Lectures(courseLink, courseName, lectureName, lectureYoutubeLink, lecturePDF).getLectures())
+       
+
+    });
+   
+
+   
 });
